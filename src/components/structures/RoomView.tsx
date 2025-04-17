@@ -1726,6 +1726,10 @@ export class RoomView extends React.Component<IRoomProps, IRoomState> {
         });
     };
 
+    private onPttUnmutedChanged = (pttUnmuted: boolean): void => {
+
+    }
+
     private onForgetClick = (): void => {
         defaultDispatcher.dispatch({
             action: "forget_room",
@@ -2405,6 +2409,7 @@ export class RoomView extends React.Component<IRoomProps, IRoomState> {
                     resizeNotifier={this.props.resizeNotifier}
                     replyToEvent={this.state.replyToEvent}
                     permalinkCreator={this.permalinkCreator}
+                    onPttUnmutedChanged={this.onPttUnmutedChanged}
                 />
             );
         }

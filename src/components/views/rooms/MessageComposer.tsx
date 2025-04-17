@@ -54,6 +54,7 @@ import { type MatrixClientProps, withMatrixClientHOC } from "../../../contexts/M
 import { UIFeature } from "../../../settings/UIFeature";
 import { formatTimeLeft } from "../../../DateUtils";
 import RoomReplacedSvg from "../../../../res/img/room_replaced.svg";
+import DMRoomMap from "../../../utils/DMRoomMap.ts";
 
 // The prefix used when persisting editor drafts to localstorage.
 export const WYSIWYG_EDITOR_STATE_STORAGE_PREFIX = "mx_wysiwyg_state_";
@@ -84,12 +85,14 @@ interface IProps extends MatrixClientProps {
     relation?: IEventRelation;
     e2eStatus?: E2EStatus;
     compact?: boolean;
+    onPttUnmutedChanged?(pttUnmuted: boolean): void;
 }
 
 interface IState {
     composerContent: string;
     isComposerEmpty: boolean;
     haveRecording: boolean;
+    pttUnmuted: boolean;
     recordingTimeLeftSeconds?: number;
     me?: RoomMember;
     isMenuOpen: boolean;
@@ -142,6 +145,7 @@ export class MessageComposer extends React.Component<IProps, IState> {
             isComposerEmpty: initialComposerContent?.length === 0,
             composerContent: initialComposerContent,
             haveRecording: false,
+            pttUnmuted: false,
             recordingTimeLeftSeconds: undefined, // when set to a number, shows a toast
             isMenuOpen: false,
             isStickerPickerOpen: false,
@@ -497,6 +501,13 @@ export class MessageComposer extends React.Component<IProps, IState> {
         return this.state.showStickersButton && !isLocalRoom(this.props.room);
     }
 
+    private get showPttButton(): boolean {
+        const dmUserId = DMRoomMap.shared().getUserIdForRoomId(this.props.room.roomId)
+        const isDirect = !!dmUserId;
+
+        return !isLocalRoom(this.props.room) && !isDirect;
+    }
+
     private getMenuPosition(): MenuProps | undefined {
         if (this.ref.current) {
             const hasFormattingButtons = this.state.isWysiwygLabEnabled && this.state.isRichTextEnabled;
@@ -523,6 +534,11 @@ export class MessageComposer extends React.Component<IProps, IState> {
             this.toggleButtonMenu();
         }
     };
+
+    private onTogglePttMutedClick = (): void => {
+        this.setState({pttUnmuted: !this.state.pttUnmuted});
+        this.props.onPttUnmutedChanged?.(this.state.pttUnmuted)
+    }
 
     public render(): React.ReactNode {
         const hasE2EIcon = Boolean(!this.state.isWysiwygLabEnabled && this.props.e2eStatus);
@@ -662,17 +678,20 @@ export class MessageComposer extends React.Component<IProps, IState> {
                                     <MessageComposerButtons
                                         addEmoji={this.addEmoji}
                                         haveRecording={this.state.haveRecording}
+                                        pttUnmuted={this.state.pttUnmuted}
                                         isMenuOpen={this.state.isMenuOpen}
                                         isStickerPickerOpen={this.state.isStickerPickerOpen}
                                         menuPosition={menuPosition}
                                         relation={this.props.relation}
                                         onRecordStartEndClick={this.onRecordStartEndClick}
+                                        onTogglePttMutedClick={this.onTogglePttMutedClick}
                                         setStickerPickerOpen={this.setStickerPickerOpen}
                                         showLocationButton={
                                             !window.electron && SettingsStore.getValue(UIFeature.LocationSharing)
                                         }
                                         showPollsButton={this.state.showPollsButton}
                                         showStickersButton={this.showStickersButton}
+                                        showPttButton={this.showPttButton}
                                         isRichTextEnabled={this.state.isRichTextEnabled}
                                         onComposerModeClick={this.onRichTextToggle}
                                         toggleButtonMenu={this.toggleButtonMenu}
