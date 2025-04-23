@@ -43,6 +43,7 @@ import ViewSourceEvent from "../components/views/messages/ViewSourceEvent";
 import { shouldDisplayAsBeaconTile } from "../utils/beacon/timeline";
 import { ElementCall } from "../models/Call";
 import { type IBodyProps } from "../components/views/messages/IBodyProps";
+import {M_STREAM_END, M_STREAM_START} from "matrix-js-sdk/src/@types/streams.ts";
 
 // Subset of EventTile's IProps plus some mixins
 export interface EventTileTypeProps
@@ -92,6 +93,12 @@ const EVENT_TILE_TYPES = new Map<string, Factory>([
     [M_POLL_START.altName, MessageEventFactory],
     [M_POLL_END.name, MessageEventFactory],
     [M_POLL_END.altName, MessageEventFactory],
+
+    [M_STREAM_START.name, MessageEventFactory],
+    [M_STREAM_START.altName, MessageEventFactory],
+    [M_STREAM_END.name, MessageEventFactory],
+    [M_STREAM_END.altName, MessageEventFactory],
+
     [EventType.CallInvite, LegacyCallEventFactory as Factory], // note that this requires a special factory type
 ]);
 

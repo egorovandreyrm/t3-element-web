@@ -53,6 +53,9 @@ import { type ShowThreadPayload } from "../../../dispatcher/payloads/ShowThreadP
 import { CardContext } from "../right_panel/context";
 import PinningUtils from "../../../utils/PinningUtils";
 import PosthogTrackers from "../../../PosthogTrackers.ts";
+import EndStreamDialog from "../dialogs/EndStreamDialog.tsx";
+import { M_STREAM_START } from "matrix-js-sdk/src/@types/streams.ts";
+import {isStreamEnded} from "../messages/MStreamBody.tsx";
 
 interface IReplyInThreadButton {
     mxEvent: MatrixEvent;
@@ -180,6 +183,14 @@ export default class MessageContextMenu extends React.Component<IProps, IState> 
             M_POLL_START.matches(mxEvent.getType()) &&
             this.state.canRedact &&
             !isPollEnded(mxEvent, MatrixClientPeg.safeGet())
+        );
+    }
+
+    private canEndStream(mxEvent: MatrixEvent): boolean {
+        return (
+            M_STREAM_START.matches(mxEvent.getType()) &&
+            this.state.canRedact &&
+            !isStreamEnded(mxEvent, MatrixClientPeg.safeGet())
         );
     }
 
@@ -311,6 +322,20 @@ export default class MessageContextMenu extends React.Component<IProps, IState> 
         const matrixClient = MatrixClientPeg.safeGet();
         Modal.createDialog(
             EndPollDialog,
+            {
+                matrixClient,
+                event: this.props.mxEvent,
+                getRelationsForEvent: this.props.getRelationsForEvent,
+            },
+            "mx_Dialog_endPoll",
+        );
+        this.closeMenu();
+    };
+
+    private onEndStreamClick = (): void => {
+        const matrixClient = MatrixClientPeg.safeGet();
+        Modal.createDialog(
+            EndStreamDialog,
             {
                 matrixClient,
                 event: this.props.mxEvent,
@@ -467,6 +492,17 @@ export default class MessageContextMenu extends React.Component<IProps, IState> 
                     iconClassName="mx_MessageContextMenu_iconEndPoll"
                     label={_t("poll|end_title")}
                     onClick={this.onEndPollClick}
+                />
+            );
+        }
+
+        let endStreamButton: JSX.Element | undefined;
+        if (this.canEndStream(mxEvent)) {
+            endStreamButton = (
+                <IconizedContextMenuOption
+                    iconClassName="mx_MessageContextMenu_iconEndStream"
+                    label={_t("stream|end_title")}
+                    onClick={this.onEndStreamClick}
                 />
             );
         }
@@ -657,6 +693,7 @@ export default class MessageContextMenu extends React.Component<IProps, IState> 
                 {viewInRoomButton}
                 {openInMapSiteButton}
                 {endPollButton}
+                {endStreamButton}
                 {forwardButton}
                 {permalinkButton}
                 {reportEventButton}

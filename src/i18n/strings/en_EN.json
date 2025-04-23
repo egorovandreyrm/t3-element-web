@@ -659,7 +659,8 @@
         "send_button_voice_message": "Send voice message",
         "send_voice_message": "Send voice message",
         "stop_voice_message": "Stop recording",
-        "voice_message_button": "Voice Message"
+        "voice_message_button": "Voice Message",
+        "stream_button": "Stream"
     },
     "ptt": {
         "speaker_muted_button": "PTT: Unmute speaker",
@@ -1758,6 +1759,25 @@
         "type_open": "Open poll",
         "unable_edit_description": "Sorry, you can't edit a poll after votes have been cast.",
         "unable_edit_title": "Can't edit poll"
+    },
+    "stream": {
+        "create_stream_action": "Create Stream",
+        "create_stream_title": "Create stream",
+        "edit_stream_title": "Edit stream",
+        "description_heading": "Description",
+        "url_heading": "Url",
+        "failed_send_stream_title": "Failed to post stream",
+        "failed_send_stream_description": "Sorry, the Stream you tried to create was not posted.",
+        "description_placeholder": "Stream description",
+        "url_placeholder": "Stream url",
+        "end_title": "End stream",
+        "end_description": "Are you sure you want to end this stream?",
+        "end_message": "The stream has ended.",
+        "error_ending_description": "Sorry, the stream did not end. Please try again.",
+        "error_ending_title": "Failed to end stream",
+        "message_header_third_party_stream": "Third party stream: ",
+        "message_header_user_stream": "User stream: ",
+        "view_stream": "View stream"
     },
     "power_level": {
         "admin": "Admin",
@@ -3428,6 +3448,13 @@
             "sender_ended": "%(senderName)s has ended a poll"
         },
         "m.poll.start": "%(senderName)s has started a poll - %(pollQuestion)s",
+
+        "m.stream.end": {
+            "ended": "Ended a stream",
+            "sender_ended": "%(senderName)s has ended a stream"
+        },
+        "m.stream.start": "%(senderName)s has started a stream - %(streamDescription)",
+
         "m.room.avatar": {
             "changed": "%(senderDisplayName)s changed the room avatar.",
             "changed_img": "%(senderDisplayName)s changed the room avatar to <img/>",

@@ -9140,14 +9140,17 @@ matrix-encrypt-attachment@^1.0.3:
   resolved "https://registry.yarnpkg.com/matrix-encrypt-attachment/-/matrix-encrypt-attachment-1.0.3.tgz#6e016587728c396549c833985f39cbf6c07ee97b"
   integrity sha512-NwfoDY/yHL9Zo8KrY5GP8ymAoZJpEFKEK+IgJKdWf5xtsIFf7KIU2pbw8+Eq592j//nSDOC+/Ff4Fk8gVvDZpw==
 
-matrix-events-sdk@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/matrix-events-sdk/-/matrix-events-sdk-0.0.1.tgz#c8c38911e2cb29023b0bbac8d6f32e0de2c957dd"
-  integrity sha512-1QEOsXO+bhyCroIe2/A5OwaxHvBm7EsSQ46DEDn8RBIfQwN5HWBpFvyWWR4QY0KHPPnnJdI99wgRiAl7Ad5qaA==
+"matrix-events-sdk@git+https://github.com/egorovandreyrm/matrix-events-sdk.git#264b553e1eba6ef4c267ad7285a96a642b2c36ae":
+  version "0.0.1-beta.7"
+  resolved "git+https://github.com/egorovandreyrm/matrix-events-sdk.git#264b553e1eba6ef4c267ad7285a96a642b2c36ae"
 
-"matrix-js-sdk@github:matrix-org/matrix-js-sdk#develop":
+"matrix-events-sdk@git+https://github.com/egorovandreyrm/matrix-events-sdk.git#4807e7752b6f596fe528aa3b022d4c7f281fa0d8":
+  version "0.0.1-beta.7"
+  resolved "git+https://github.com/egorovandreyrm/matrix-events-sdk.git#4807e7752b6f596fe528aa3b022d4c7f281fa0d8"
+
+"matrix-js-sdk@git+https://github.com/egorovandreyrm/matrix-js-sdk.git#d8c34a37c54b53dca9e794ba3c53811a613af5fd":
   version "37.3.0"
-  resolved "https://codeload.github.com/matrix-org/matrix-js-sdk/tar.gz/eb793aaa08c377b0d9d66a4bbbe6854286523221"
+  resolved "git+https://github.com/egorovandreyrm/matrix-js-sdk.git#d8c34a37c54b53dca9e794ba3c53811a613af5fd"
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@matrix-org/matrix-sdk-crypto-wasm" "^14.0.1"
@@ -9157,7 +9160,7 @@ matrix-events-sdk@0.0.1:
     content-type "^1.0.4"
     jwt-decode "^4.0.0"
     loglevel "^1.7.1"
-    matrix-events-sdk "0.0.1"
+    matrix-events-sdk "git+https://github.com/egorovandreyrm/matrix-events-sdk.git#264b553e1eba6ef4c267ad7285a96a642b2c36ae"
     matrix-widget-api "^1.10.0"
     oidc-client-ts "^3.0.1"
     p-retry "4"

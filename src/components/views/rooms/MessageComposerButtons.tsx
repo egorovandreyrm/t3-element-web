@@ -35,6 +35,7 @@ import {filterBoolean} from "../../../utils/arrays";
 import {useSettingValue} from "../../../hooks/useSettings";
 import AccessibleButton, {type ButtonEvent} from "../elements/AccessibleButton";
 import {useScopedRoomContext} from "../../../contexts/ScopedRoomContext.tsx";
+import StreamCreateDialog from "../elements/StreamCreateDialog.tsx";
 
 interface IProps {
     addEmoji: (emoji: string) => boolean;
@@ -44,7 +45,7 @@ interface IProps {
     isStickerPickerOpen: boolean;
     menuPosition?: MenuProps;
     onRecordStartEndClick: () => void;
-    onTogglePttMutedClick: () => void;
+    onCreateClick: () => void;
     relation?: IEventRelation;
     setStickerPickerOpen: (isStickerPickerOpen: boolean) => void;
     showLocationButton: boolean;
@@ -91,6 +92,7 @@ const MessageComposerButtons: React.FC<IProps> = (props: IProps) => {
             voiceRecordingButton(props, narrow),
             props.showPollsButton ? pollButton(room, props.relation) : null,
             showLocationButton(props, room, matrixClient),
+            streamButton(room)
         ];
     } else {
         mainButtons = [
@@ -112,6 +114,7 @@ const MessageComposerButtons: React.FC<IProps> = (props: IProps) => {
             voiceRecordingButton(props, narrow),
             props.showPollsButton ? pollButton(room, props.relation) : null,
             showLocationButton(props, room, matrixClient),
+            streamButton(room)
         ];
     }
 
@@ -286,6 +289,10 @@ function voiceRecordingButton(props: IProps, narrow: boolean): ReactElement | nu
 //     />;
 // }
 
+function streamButton(room: Room): ReactElement {
+    return <StreamButton key="streams" room={room} />;
+}
+
 function pollButton(room: Room, relation?: IEventRelation): ReactElement {
     return <PollButton key="polls" room={room} relation={relation} />;
 }
@@ -337,6 +344,65 @@ class PollButton extends React.PureComponent<IPollButtonProps> {
                 iconClassName="mx_MessageComposer_poll"
                 onClick={this.onCreateClick}
                 title={_t("composer|poll_button")}
+            />
+        );
+    }
+}
+
+interface IStreamButtonProps {
+    room: Room;
+}
+
+class StreamButton extends React.PureComponent<IStreamButtonProps> {
+    public static contextType = OverflowMenuContext;
+    declare public context: React.ContextType<typeof OverflowMenuContext>;
+
+    private onCreateClick = (): void => {
+        this.context?.(); // close overflow menu
+        // const canSend = this.props.room.currentState.maySendEvent(
+        //     M_POLL_START.name,
+        //     MatrixClientPeg.safeGet().getSafeUserId(),
+        // );
+        // if (!canSend) {
+        //     Modal.createDialog(ErrorDialog, {
+        //         title: _t("composer|poll_button_no_perms_title"),
+        //         description: _t("composer|poll_button_no_perms_description"),
+        //     });
+        // } else {
+        //     const threadId =
+        //         this.props.relation?.rel_type === THREAD_RELATION_TYPE.name ? this.props.relation.event_id : undefined;
+        //
+        //     Modal.createDialog(
+        //         PollCreateDialog,
+        //         {
+        //             room: this.props.room,
+        //             threadId,
+        //         },
+        //         "mx_CompoundDialog",
+        //         false, // isPriorityModal
+        //         true, // isStaticModal
+        //     );
+        // }
+
+        Modal.createDialog(
+            StreamCreateDialog,
+            { room: this.props.room },
+            "mx_CompoundDialog",
+            false, // isPriorityModal
+            true, // isStaticModal
+        );
+    };
+
+    public render(): React.ReactNode {
+        // do not allow sending polls within threads at this time
+        // if (this.props.relation?.rel_type === THREAD_RELATION_TYPE.name) return null;
+
+        return (
+            <CollapsibleButton
+                className="mx_MessageComposer_button"
+                iconClassName="mx_MessageComposer_stream"
+                onClick={this.onCreateClick}
+                title={_t("composer|stream_button")}
             />
         );
     }

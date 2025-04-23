@@ -19,6 +19,7 @@ import {
     M_POLL_START,
     type IContent,
 } from "matrix-js-sdk/src/matrix";
+import {M_STREAM_END, M_STREAM_START} from "matrix-js-sdk/src/@types/streams.ts";
 
 import SettingsStore from "../../../settings/SettingsStore";
 import { Mjolnir } from "../../../mjolnir/Mjolnir";
@@ -40,6 +41,8 @@ import MjolnirBody from "./MjolnirBody";
 import MBeaconBody from "./MBeaconBody";
 import { DecryptionFailureBody } from "./DecryptionFailureBody";
 import { type GetRelationsForEvent, type IEventTileOps } from "../rooms/EventTile";
+import MStreamBody from "./MStreamBody.tsx";
+import {MStreamEndBody} from "./MStreamEndBody.tsx";
 
 // onMessageAllowed is handled internally
 interface IProps extends Omit<IBodyProps, "onMessageAllowed" | "mediaEventHelper"> {
@@ -72,6 +75,10 @@ const baseEvTypes = new Map<string, React.ComponentType<IBodyProps>>([
     [M_POLL_START.altName, MPollBody],
     [M_POLL_END.name, MPollEndBody],
     [M_POLL_END.altName, MPollEndBody],
+    [M_STREAM_START.name, MStreamBody],
+    [M_STREAM_START.altName, MStreamBody],
+    [M_STREAM_END.name, MStreamEndBody],
+    [M_STREAM_END.altName, MStreamEndBody],
     [M_BEACON_INFO.name, MBeaconBody],
     [M_BEACON_INFO.altName, MBeaconBody],
 ]);

@@ -21,6 +21,7 @@ import SettingsStore from "../settings/SettingsStore";
 import { haveRendererForEvent, JitsiEventFactory, JSONEventFactory, pickFactory } from "../events/EventTileFactory";
 import { getMessageModerationState, isLocationEvent, MessageModerationState } from "./EventUtils";
 import { ElementCall } from "../models/Call";
+import {M_STREAM_START} from "matrix-js-sdk/src/@types/streams.ts";
 
 const calcIsInfoMessage = (
     eventType: EventType | string,
@@ -36,6 +37,7 @@ const calcIsInfoMessage = (
         eventType !== EventType.Sticker &&
         eventType !== EventType.RoomCreate &&
         !M_POLL_START.matches(eventType) &&
+        !M_STREAM_START.matches(eventType) &&
         !M_POLL_END.matches(eventType) &&
         !M_BEACON_INFO.matches(eventType)
     );
@@ -88,6 +90,7 @@ export function getEventDisplayInfo(
     const noBubbleEvent =
         (eventType === EventType.RoomMessage && msgtype === MsgType.Emote) ||
         M_POLL_START.matches(eventType) ||
+        M_STREAM_START.matches(eventType) ||
         M_BEACON_INFO.matches(eventType) ||
         isLocationEvent(mxEvent);
 
