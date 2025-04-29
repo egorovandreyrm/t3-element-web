@@ -30,13 +30,15 @@ enum FocusTarget {
 
 interface IState extends IScrollableBaseState {
     description: string;
-    url: string;
+    app: string;
+    id: string;
     busy: boolean;
     autoFocusTarget: FocusTarget;
 }
 
 const MAX_DESCRIPTION_LENGTH = 340;
-const MAX_URL_LENGTH = 340;
+const MAX_APP_LENGTH = 128;
+const MAX_ID_LENGTH = 128;
 
 function creatingInitialState(): IState {
     return {
@@ -44,7 +46,8 @@ function creatingInitialState(): IState {
         actionLabel: _t("stream|create_stream_action"),
         canSubmit: false, // need to add a question and at least one option first
         description: "",
-        url: "",
+        app: "",
+        id: "",
         busy: false,
         autoFocusTarget: FocusTarget.Description,
     };
@@ -59,7 +62,8 @@ function editingInitialState(editingMxEvent: MatrixEvent): IState {
         actionLabel: _t("action|done"),
         canSubmit: true,
         description: "",//poll.question.text,
-        url: "",
+        app: "",
+        id: "",
         busy: false,
         autoFocusTarget: FocusTarget.Description
     };
@@ -76,7 +80,8 @@ export default class StreamCreateDialog extends ScrollableBaseModal<IProps, ISta
         this.setState({
             canSubmit:
                 this.state.description.trim().length > 0 &&
-                this.state.url.trim().length > 0
+                this.state.app.trim().length > 0 &&
+                this.state.id.trim().length > 0
         });
     }
 
@@ -84,14 +89,19 @@ export default class StreamCreateDialog extends ScrollableBaseModal<IProps, ISta
         this.setState({ description: e.target.value }, () => this.checkCanSubmit());
     };
 
-    private onUrlChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        this.setState({ url: e.target.value }, () => this.checkCanSubmit());
+    private onAppChange = (e: ChangeEvent<HTMLInputElement>): void => {
+        this.setState({ app: e.target.value }, () => this.checkCanSubmit());
     };
+
+    private onIdChange = (e: ChangeEvent<HTMLInputElement>): void => {
+        this.setState({ id: e.target.value }, () => this.checkCanSubmit());
+    }
 
     private createEvent(): IPartialEvent<object> {
         const streamStart = StreamStartEvent.from(
             this.state.description,
-            this.state.url,
+            this.state.app,
+            this.state.id,
             true
         ).serialize();
 
@@ -164,13 +174,25 @@ export default class StreamCreateDialog extends ScrollableBaseModal<IProps, ISta
                     autoFocus={this.state.autoFocusTarget === FocusTarget.Description}
                 />
 
-                <h2>{_t("stream|url_heading")}</h2>
+                <h2>{_t("stream|app_heading")}</h2>
                 <Field
-                    id="stream-url-input"
-                    value={this.state.url}
-                    maxLength={MAX_URL_LENGTH}
-                    placeholder={_t("stream|url_placeholder")}
-                    onChange={this.onUrlChange}
+                    id="stream-app-input"
+                    value={this.state.app}
+                    maxLength={MAX_APP_LENGTH}
+                    placeholder={_t("stream|app_placeholder")}
+                    onChange={this.onAppChange}
+                    usePlaceholderAsHint={true}
+                    disabled={this.state.busy}
+                    autoFocus={this.state.autoFocusTarget === FocusTarget.Url}
+                />
+
+                <h2>{_t("stream|id_heading")}</h2>
+                <Field
+                    id="stream-id-input"
+                    value={this.state.id}
+                    maxLength={MAX_ID_LENGTH}
+                    placeholder={_t("stream|id_placeholder")}
+                    onChange={this.onIdChange}
                     usePlaceholderAsHint={true}
                     disabled={this.state.busy}
                     autoFocus={this.state.autoFocusTarget === FocusTarget.Url}
