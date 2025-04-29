@@ -1777,7 +1777,10 @@
         "error_ending_title": "Failed to end stream",
         "message_header_third_party_stream": "Third party stream: ",
         "message_header_user_stream": "User stream: ",
-        "view_stream": "View stream"
+        "view_stream": "View stream",
+        "third_party_stream_info": "Configure your 3party device to stream to srt or rtmp endpoint.",
+        "third_party_srt_stream_info": "srt://t3.rpipro.xyz:10080?streamid=#!::r=%(stream_app)s/%(stream_id)s,m=publish",
+        "third_party_rtmp_stream_info": "rtmp://t3.rpipro.xyz/%(stream_app)s/%(stream_id)s"
     },
     "power_level": {
         "admin": "Admin",

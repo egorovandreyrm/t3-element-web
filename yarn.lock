@@ -9140,17 +9140,13 @@ matrix-encrypt-attachment@^1.0.3:
   resolved "https://registry.yarnpkg.com/matrix-encrypt-attachment/-/matrix-encrypt-attachment-1.0.3.tgz#6e016587728c396549c833985f39cbf6c07ee97b"
   integrity sha512-NwfoDY/yHL9Zo8KrY5GP8ymAoZJpEFKEK+IgJKdWf5xtsIFf7KIU2pbw8+Eq592j//nSDOC+/Ff4Fk8gVvDZpw==
 
-"matrix-events-sdk@git+https://github.com/egorovandreyrm/matrix-events-sdk.git#264b553e1eba6ef4c267ad7285a96a642b2c36ae":
+"matrix-events-sdk@git+https://github.com/egorovandreyrm/matrix-events-sdk.git#1fd57ac3921caf9dddcb9a1da771e97384f5efe7":
   version "0.0.1-beta.7"
-  resolved "git+https://github.com/egorovandreyrm/matrix-events-sdk.git#264b553e1eba6ef4c267ad7285a96a642b2c36ae"
+  resolved "git+https://github.com/egorovandreyrm/matrix-events-sdk.git#1fd57ac3921caf9dddcb9a1da771e97384f5efe7"
 
-"matrix-events-sdk@git+https://github.com/egorovandreyrm/matrix-events-sdk.git#4807e7752b6f596fe528aa3b022d4c7f281fa0d8":
-  version "0.0.1-beta.7"
-  resolved "git+https://github.com/egorovandreyrm/matrix-events-sdk.git#4807e7752b6f596fe528aa3b022d4c7f281fa0d8"
-
-"matrix-js-sdk@git+https://github.com/egorovandreyrm/matrix-js-sdk.git#d8c34a37c54b53dca9e794ba3c53811a613af5fd":
+"matrix-js-sdk@git+https://github.com/egorovandreyrm/matrix-js-sdk.git#4b9451063419d1f1a177e2766ccba42ec968d0f5":
   version "37.3.0"
-  resolved "git+https://github.com/egorovandreyrm/matrix-js-sdk.git#d8c34a37c54b53dca9e794ba3c53811a613af5fd"
+  resolved "git+https://github.com/egorovandreyrm/matrix-js-sdk.git#4b9451063419d1f1a177e2766ccba42ec968d0f5"
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@matrix-org/matrix-sdk-crypto-wasm" "^14.0.1"
@@ -9160,7 +9156,7 @@ matrix-encrypt-attachment@^1.0.3:
     content-type "^1.0.4"
     jwt-decode "^4.0.0"
     loglevel "^1.7.1"
-    matrix-events-sdk "git+https://github.com/egorovandreyrm/matrix-events-sdk.git#264b553e1eba6ef4c267ad7285a96a642b2c36ae"
+    matrix-events-sdk "git+https://github.com/egorovandreyrm/matrix-events-sdk.git#1fd57ac3921caf9dddcb9a1da771e97384f5efe7"
     matrix-widget-api "^1.10.0"
     oidc-client-ts "^3.0.1"
     p-retry "4"
