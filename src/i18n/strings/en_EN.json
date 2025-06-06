@@ -660,7 +660,8 @@
         "send_voice_message": "Send voice message",
         "stop_voice_message": "Stop recording",
         "voice_message_button": "Voice Message",
-        "stream_button": "Stream"
+        "stream_button": "Stream",
+        "map_tracker_pin_button": "Tracker"
     },
     "ptt": {
         "speaker_muted_button": "PTT: Unmute speaker",
@@ -668,6 +669,27 @@
         "mic_muted_button": "PTT: Unmute mic",
         "mic_unmuted_button": "PTT: Mute mic",
         "connection_status": "PTT: "
+    },
+    "map_pin": {
+        "toggle_widget_visibility": "Map Pins",
+        "right_panel": {
+            "header_title": "Map Pins",
+            "reload_button": "Reload"
+        },
+        "failed_send_map_pin_title": "Failed to post Map Pin",
+        "failed_send_map_pin_description": "Sorry, the Map Pin you tried to create was not posted.",
+        "name_placeholder": "Map Pin Name",
+        "name_heading": "Name",
+        "longitude_heading": "Longitude",
+        "latitude_heading": "Latitude",
+        "create_map_pin_action": "Create Map Pin",
+        "create_map_pin_title": "Create Map Pin",
+        "edit_map_pin_title": "Edit Map Pin",
+
+        "tracker_name_placeholder": "Map Tracker Pin Name",
+        "create_map_tracker_pin_action": "Create Map Tracker Pin",
+        "create_map_tracker_pin_title": "Create Map Tracker Pin",
+        "edit_map_tracker_pin_title": "Edit Map Tracker Pin"
     },
     "console_dev_note": "If you know what you're doing, Element is open-source, be sure to check out our GitHub (https://github.com/vector-im/element-web/) and contribute!",
     "console_scam_warning": "If someone told you to copy/paste something here, there is a high likelihood you're being scammed!",

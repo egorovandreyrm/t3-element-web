@@ -28,6 +28,7 @@ import {
     useConnectionState
 } from "@livekit/components-react";
 import {logger} from "matrix-js-sdk/src/logger";
+import {LocationPinIcon} from "@vector-im/compound-design-tokens/assets/web/icons";
 
 import {useRoomName} from "../../../../hooks/useRoomName.ts";
 import {RightPanelPhases} from "../../../../stores/right-panel/RightPanelStorePhases.ts";
@@ -231,10 +232,53 @@ export default function RoomHeader(
         }
     }
 
+    const mapPinsToggleVisibilityClick = async (): Promise<void> => {
+        logger.info(`mapPinsToggleVisibilityClick`);
+
+        // const widget = WidgetStore.instance.addVirtualWidget(
+        //     {
+        //         id: "100500",
+        //         creatorUserId: "@user1:rpipro.tech",
+        //         type: WidgetType.CUSTOM.preferred,
+        //         url: "http://t3.rpipro.xyz:5055/docs/public#/",
+        //         name: "Example widget",
+        //     },
+        //     room.roomId,
+        // );
+        //
+        // WidgetLayoutStore.instance.moveToContainer(room, widget, Container.Center);
+
+        // const widgetId = secureRandomString(24);
+        //
+        // const auth = "openidtoken-jwt"
+        // const confId = base32.stringify(new TextEncoder().encode(room.roomId), { pad: false })
+        //
+        // const widgetUrl = new URL(WidgetUtils.getLocalJitsiWrapperUrl({ auth }));
+        // widgetUrl.search = ""; // Causes the URL class use searchParams instead
+        // widgetUrl.searchParams.set("confId", confId);
+        //
+        // await WidgetUtils.setUserWidget(
+        //     client,
+        //     widgetId,
+        //     WidgetType.CUSTOM,
+        //     "http://t3.rpipro.xyz:4567/player.html?app=dasd&stream=dsa", //widgetUrl.toString(),
+        //     "Map Pins",
+        //     {}
+        //     {
+        //     conferenceId: confId,
+        //     roomName: client.getRoom(room.roomId)?.name,
+        //     isAudioOnly: false,
+        //     isVideoChannel: true,
+        //     domain: "meet.element.io",
+        //     auth
+        // }
+        // );
+    }
+
     const toggleCallButton = (
         <Tooltip label={isViewingCall ? _t("voip|minimise_call") : _t("voip|maximise_call")}>
             <IconButton onClick={toggleCall}>
-                <VideoCallIcon/>
+                <VideoCallIcon />
             </IconButton>
         </Tooltip>
     );
@@ -257,7 +301,7 @@ export default function RoomHeader(
 
     const callIconWithTooltip = (
         <Tooltip label={videoCallDisabledReason ?? _t("voip|video_call")}>
-            <VideoCallIcon/>
+            <VideoCallIcon />
         </Tooltip>
     );
 
@@ -327,14 +371,14 @@ export default function RoomHeader(
                 aria-label={voiceCallDisabledReason ?? _t("voip|voice_call")}
                 onClick={(ev) => voiceCallClick(ev, callOptions[0])}
             >
-                <VoiceCallIcon/>
+                <VoiceCallIcon />
             </IconButton>
         </Tooltip>
     );
     const closeLobbyButton = (
         <Tooltip label={_t("voip|close_lobby")}>
             <IconButton onClick={toggleCall}>
-                <CloseCallIcon/>
+                <CloseCallIcon />
             </IconButton>
         </Tooltip>
     );
@@ -347,12 +391,12 @@ export default function RoomHeader(
                 onClick={pttToggleSpeakerMutedClick}
             >
 
-                {pttSpeakerMuted ? <PttSpeakerMutedIcon/> : <PttSpeakerIcon/>}
+                {pttSpeakerMuted ? <PttSpeakerMutedIcon /> : <PttSpeakerIcon />}
             </IconButton>
         </Tooltip>
     );
 
-    const pttToggleMicMutedButton: JSX.Element | undefined = (
+    const pttToggleMicMutedButton: JSX.Element = (
         <Tooltip label="PTT: Mic">
             <TrackToggle
                 source={Track.Source.Microphone}
@@ -362,6 +406,20 @@ export default function RoomHeader(
             />
         </Tooltip>
     );
+
+    const mapPinsButton: JSX.Element = (
+        <Tooltip label={_t("map_pins|toggle_widget_visibility")}>
+            <IconButton
+                onClick={(evt) => {
+                    evt.stopPropagation();
+                    RightPanelStore.instance.showOrHidePhase(RightPanelPhases.MapPins);
+                }}
+                aria-label={_t("map_pins|toggle_widget_visibility")}
+            >
+                <ToggleableIcon Icon={LocationPinIcon} phase={RightPanelPhases.MapPins} />
+            </IconButton>
+        </Tooltip>
+    )
 
     let videoCallButton: JSX.Element | undefined = startVideoCallButton;
     if (isConnectedToCall) {
@@ -395,8 +453,8 @@ export default function RoomHeader(
         <>
             <CurrentRightPanelPhaseContextProvider roomId={room.roomId}>
                 <RoomContext.Provider value={livekitRoom}>
-                    <RoomAudioRenderer muted={pttSpeakerMuted}/>
-                    <StartAudio label="Click to start listening to PTT"/>
+                    <RoomAudioRenderer muted={pttSpeakerMuted} />
+                    <StartAudio label="Click to start listening to PTT" />
                     <Flex as="header" align="center" gap="var(--cpd-space-3x)" className="mx_RoomHeader light-panel">
                         <WithPresenceIndicator room={room} size="8px">
                             {/* We hide this from the tabIndex list as it is a pointer shortcut and superfluous for a11y */}
@@ -486,9 +544,10 @@ export default function RoomHeader(
                             {!isDirectMessage && (<div>{_t("ptt|connection_status") + connectionState}</div>)}
                             {!isDirectMessage && pttToggleMicMutedButton}
                             {!isDirectMessage && pttToggleSpeakerMutedButton}
+                            {!isDirectMessage && mapPinsButton}
                         </>
 
-                        {isViewingCall && <CallGuestLinkButton room={room}/>}
+                        {isViewingCall && <CallGuestLinkButton room={room} />}
 
                         {hasActiveCallSession && !isConnectedToCall && !isViewingCall ? (
                             joinCallButton
@@ -499,7 +558,7 @@ export default function RoomHeader(
                             </>
                         )}
 
-                        {showChatButton && <VideoRoomChatButton room={room}/>}
+                        {showChatButton && <VideoRoomChatButton room={room} />}
 
                         <Tooltip label={_t("common|threads")}>
                             <IconButton
@@ -511,7 +570,7 @@ export default function RoomHeader(
                                 }}
                                 aria-label={_t("common|threads")}
                             >
-                                <ToggleableIcon Icon={ThreadsIcon} phase={RightPanelPhases.ThreadPanel}/>
+                                <ToggleableIcon Icon={ThreadsIcon} phase={RightPanelPhases.ThreadPanel} />
                             </IconButton>
                         </Tooltip>
                         {notificationsEnabled && (
@@ -525,7 +584,7 @@ export default function RoomHeader(
                                     aria-label={_t("notifications|enable_prompt_toast_title")}
                                 >
                                     <ToggleableIcon Icon={NotificationsIcon}
-                                                    phase={RightPanelPhases.NotificationPanel}/>
+                                                    phase={RightPanelPhases.NotificationPanel} />
                                 </IconButton>
                             </Tooltip>
                         )}
@@ -538,7 +597,7 @@ export default function RoomHeader(
                                 }}
                                 aria-label={_t("right_panel|room_summary_card|title")}
                             >
-                                <ToggleableIcon Icon={RoomInfoIcon} phase={RightPanelPhases.RoomSummary}/>
+                                <ToggleableIcon Icon={RoomInfoIcon} phase={RightPanelPhases.RoomSummary} />
                             </IconButton>
                         </Tooltip>
 
@@ -562,7 +621,7 @@ export default function RoomHeader(
                             </BodyText>
                         )}
                     </Flex>
-                    {askToJoinEnabled && <RoomKnocksBar room={room}/>}
+                    {askToJoinEnabled && <RoomKnocksBar room={room} />}
                 </RoomContext.Provider>
             </CurrentRightPanelPhaseContextProvider>
         </>

@@ -7,12 +7,12 @@ SPDX-License-Identifier: AGPL-3.0-only OR GPL-3.0-only OR LicenseRef-Element-Com
 Please see LICENSE files in the repository root for full details.
 */
 
-import React, { type ChangeEvent } from "react";
-import { type Room, type RoomState, RoomStateEvent, RoomMember, type MatrixEvent } from "matrix-js-sdk/src/matrix";
-import { throttle } from "lodash";
+import React, {type ChangeEvent} from "react";
+import {type MatrixEvent, type Room, RoomMember, type RoomState, RoomStateEvent} from "matrix-js-sdk/src/matrix";
+import {throttle} from "lodash";
 
 import dis from "../../dispatcher/dispatcher";
-import { RightPanelPhases } from "../../stores/right-panel/RightPanelStorePhases";
+import {RightPanelPhases} from "../../stores/right-panel/RightPanelStorePhases";
 import RightPanelStore from "../../stores/right-panel/RightPanelStore";
 import MatrixClientContext from "../../contexts/MatrixClientContext";
 import RoomSummaryCard from "../views/right_panel/RoomSummaryCard";
@@ -24,16 +24,17 @@ import ThreadView from "./ThreadView";
 import ThreadPanel from "./ThreadPanel";
 import NotificationPanel from "./NotificationPanel";
 import type ResizeNotifier from "../../utils/ResizeNotifier";
-import { PinnedMessagesCard } from "../views/right_panel/PinnedMessagesCard";
-import { type RoomPermalinkCreator } from "../../utils/permalinks/Permalinks";
-import { type E2EStatus } from "../../utils/ShieldUtils";
+import {PinnedMessagesCard} from "../views/right_panel/PinnedMessagesCard";
+import {type RoomPermalinkCreator} from "../../utils/permalinks/Permalinks";
+import {type E2EStatus} from "../../utils/ShieldUtils";
 import TimelineCard from "../views/right_panel/TimelineCard";
-import { UPDATE_EVENT } from "../../stores/AsyncStore";
-import { type IRightPanelCard, type IRightPanelCardState } from "../../stores/right-panel/RightPanelStoreIPanelState";
-import { Action } from "../../dispatcher/actions";
-import { type XOR } from "../../@types/common";
+import {UPDATE_EVENT} from "../../stores/AsyncStore";
+import {type IRightPanelCard, type IRightPanelCardState} from "../../stores/right-panel/RightPanelStoreIPanelState";
+import {Action} from "../../dispatcher/actions";
+import {type XOR} from "../../@types/common";
 import ExtensionsCard from "../views/right_panel/ExtensionsCard";
 import MemberListView from "../views/rooms/MemberList/MemberListView";
+import MapPinsCard from "../views/right_panel/MapPinsCard.tsx";
 
 interface BaseProps {
     overwriteCard?: IRightPanelCard; // used to display a custom card and ignoring the RightPanelStore (used for UserView)
@@ -277,6 +278,13 @@ export default class RightPanel extends React.Component<Props, IState> {
                     card = <WidgetCard room={this.props.room} widgetId={cardState.widgetId} onClose={this.onClose} />;
                 }
                 break;
+
+            case RightPanelPhases.MapPins:
+                if (!!this.props.room) {
+                    card = (
+                        <MapPinsCard room={this.props.room} />
+                    );
+                }
         }
 
         return (
